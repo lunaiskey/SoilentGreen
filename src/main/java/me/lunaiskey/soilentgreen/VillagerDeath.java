@@ -23,7 +23,11 @@ public class VillagerDeath implements Listener {
             int z = (int) villager.getLocation().getZ();
 
             if (e.getDamage() >= villager.getHealth()) {
-                onVillagerKill(villager,x,y,z,e.getDamager(),e.getCause());
+                Bukkit.getScheduler().runTask(SoilentGreen.getInstance(),()-> {
+                    if (villager.isDead()) {
+                        onVillagerKill(villager,x,y,z,e.getDamager(),e.getCause());
+                    }
+                });
             }
         }
     }
@@ -35,17 +39,21 @@ public class VillagerDeath implements Listener {
             int x = (int) villager.getLocation().getX();
             int y = (int) villager.getLocation().getY();
             int z = (int) villager.getLocation().getZ();
-            //Villager is Killed.
+            //Villager should be Killed.
             if (e.getDamage() >= villager.getHealth()) {
-                switch (e.getCause()) {
-                    case ENTITY_ATTACK:
-                    case ENTITY_EXPLOSION:
-                    case ENTITY_SWEEP_ATTACK:
-                        break;
-                    default:
-                        onVillagerKill(villager,x,y,z,null,e.getCause());
-                }
-
+                //checks if the villager is actually dead, compat with other plugins that stop entity death for some reason
+                Bukkit.getScheduler().runTask(SoilentGreen.getInstance(),()-> {
+                    if (villager.isDead()) {
+                        switch (e.getCause()) {
+                            case ENTITY_ATTACK:
+                            case ENTITY_EXPLOSION:
+                            case ENTITY_SWEEP_ATTACK:
+                                break;
+                            default:
+                                onVillagerKill(villager,x,y,z,null,e.getCause());
+                        }
+                    }
+                });
             }
         }
     }
@@ -56,16 +64,16 @@ public class VillagerDeath implements Listener {
             case ENTITY_ATTACK:
             case ENTITY_EXPLOSION:
             case ENTITY_SWEEP_ATTACK:
-                Bukkit.getLogger().info(prefix + ChatColor.GREEN + " Taco Meat (" + villager.getName() + ") was harvested at " + ChatColor.YELLOW + x + ", " + y + ", " + z + ChatColor.GREEN + " by " + ChatColor.WHITE + killer + ChatColor.GREEN + "! Happy Munching!");
+                Bukkit.getLogger().info(prefix+ChatColor.GREEN+" Taco Meat ("+villager.getName()+") was harvested at "+ChatColor.YELLOW+x+", "+y+", "+z+ChatColor.GREEN+" by "+ChatColor.WHITE+killer+ChatColor.GREEN+"! Happy Munching!");
                 break;
             case FIRE:
             case FIRE_TICK:
             case LAVA:
             case HOT_FLOOR:
-                Bukkit.getLogger().info(prefix + ChatColor.GREEN + " Taco Meat (" + villager.getName() + ") was harvested and cooked at " + ChatColor.YELLOW + x + ", " + y + ", " + z + ChatColor.GREEN + "! Happy Munching!");
+                Bukkit.getLogger().info(prefix+ChatColor.GREEN+" Taco Meat ("+villager.getName()+") was harvested and cooked at "+ChatColor.YELLOW+x+", "+y+", "+z+ChatColor.GREEN+"! Happy Munching!");
                 break;
             default:
-                Bukkit.getLogger().info(prefix + ChatColor.GREEN + " Taco Meat (" + villager.getName() + ") was harvested at " + ChatColor.YELLOW + x + ", " + y + ", " + z + ChatColor.GREEN + "! Happy Munching!");
+                Bukkit.getLogger().info(prefix+ChatColor.GREEN+" Taco Meat ("+villager.getName()+") was harvested at "+ChatColor.YELLOW+x+ ", "+y+", "+z+ChatColor.GREEN+"! Happy Munching!");
         }
     }
 }
