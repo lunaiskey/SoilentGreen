@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,7 +15,7 @@ public class VillagerDeath implements Listener {
 
     private final String prefix = SoilentGreen.getPrefix();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onVillagerDeathByEntity(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Villager) {
             Villager villager = (Villager) e.getEntity();
@@ -32,7 +33,7 @@ public class VillagerDeath implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onVillagerDeath(EntityDamageEvent e) {
         if (e.getEntity() instanceof Villager) {
             Villager villager = (Villager) e.getEntity();
