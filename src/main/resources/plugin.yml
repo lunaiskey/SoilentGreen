@@ -1,0 +1,7 @@
+name: SoilentGreen
+version: '${project.version}'
+main: me.lunaiskey.soilentgreen.SoilentGreen
+api-version: 1.18
+authors: [ Lunaiskey ]
+description: Tacos!
+website: https://github.com/lunaiskey
